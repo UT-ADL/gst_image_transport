@@ -19,7 +19,7 @@ This repo has been created to be used in pair with the [nvidia_gmsl_driver_ros](
   ```
 - Clone the repo
   ```bash
-  git clone #todo ./src
+  git clone git@github.com:UT-ADL/h264_image_transport.git ./src
   ```
 - Build and source the workspace
   ```bash
