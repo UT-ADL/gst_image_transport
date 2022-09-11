@@ -1,13 +1,7 @@
 # h264_image_transport
-H264 plugin for the ROS image transport.
-Forked from [tilk/h264_image_transport](https://github.com/tilk/h264_image_transport).
+<sup>Forked from [tilk/h264_image_transport](https://github.com/tilk/h264_image_transport).</sup>
 
-There are two packages :
-- h264_image_transport
-  - Contains a H264 subscription plugin for the ROS image transport **only**,
-- h264_image_transport_msgs
-  - Contains messages for the plugins above.
-
+H264 subscription plugin for the ROS image transport.  
 This repo has been created to be used in pair with the [nvidia_gmsl_driver_ros](https://github.com/UT-ADL/sekonix_camera_ut) but can be used to decode any h264 packets published with the correct message.
 
 ## How to use
