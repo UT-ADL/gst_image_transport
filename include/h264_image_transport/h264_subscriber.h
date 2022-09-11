@@ -3,7 +3,7 @@
 
 #include <image_transport/simple_subscriber_plugin.h>
 #include <image_transport/transport_hints.h>
-#include "h264_image_transport_msgs/H264Packet.h"
+#include <sensor_msgs/CompressedImage.h>
 
 extern "C"
 {
@@ -18,7 +18,7 @@ extern "C"
 
 namespace h264_image_transport {
 
-class H264Subscriber : public image_transport::SimpleSubscriberPlugin<h264_image_transport_msgs::H264Packet>
+class H264Subscriber : public image_transport::SimpleSubscriberPlugin<sensor_msgs::CompressedImage>
 {
 public:
     H264Subscriber();
@@ -30,11 +30,11 @@ public:
     }
 
 protected:
-    virtual void internalCallback(const h264_image_transport_msgs::H264Packet::ConstPtr& message, const Callback& user_cb);
+    virtual void internalCallback(const sensor_msgs::CompressedImage::ConstPtr& message, const Callback& user_cb);
     virtual void subscribeImpl (ros::NodeHandle &nh, const std::string &base_topic, uint32_t queue_size, const Callback &callback, const ros::VoidPtr &tracked_object, const image_transport::TransportHints &transport_hints);
 
 private:
-    struct SwsContext *convert_ctx;
+    struct SwsContext *convert_ctx = nullptr;
 
     AVCodec *codec;
     AVCodecContext *c;

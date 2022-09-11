@@ -9,7 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   cv_bridge
   pluginlib
-  h264_image_transport_msgs
+  sensor_msgs
 )
 
 catkin_package(

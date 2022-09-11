@@ -1,12 +1,13 @@
-#include "h264_image_transport/h264_subscriber.h"
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/imgproc/imgproc.hpp>
+
+#include "h264_image_transport/h264_subscriber.h"
 
 using namespace std;
 
 namespace h264_image_transport {
 
-H264Subscriber::H264Subscriber(): convert_ctx(NULL)
+H264Subscriber::H264Subscriber()
 {
     av_init_packet(&avpkt);
     avcodec_register_all();
@@ -17,7 +18,7 @@ H264Subscriber::H264Subscriber(): convert_ctx(NULL)
         throw ros::Exception("H264 codec not found, check that your ffmpeg is built with H264 support"); 
     }
     c = avcodec_alloc_context3(codec);
-    if(avcodec_open2(c, codec, 0) < 0) {
+    if(avcodec_open2(c, codec, nullptr) < 0) {
         ROS_ERROR("Cannot open codec");
         throw ros::Exception("Cannot open codec");
     }
@@ -37,7 +38,7 @@ void H264Subscriber::subscribeImpl (ros::NodeHandle &nh, const std::string &base
     SimpleSubscriberPlugin::subscribeImpl(nh, base_topic, queue_size, callback, tracked_object, transport_hints);
 }
 
-void H264Subscriber::internalCallback(const h264_image_transport_msgs::H264Packet::ConstPtr& message, const Callback& user_cb)
+void H264Subscriber::internalCallback(const sensor_msgs::CompressedImage::ConstPtr& message, const Callback& user_cb)
 {
     avpkt.size = message->data.size();
     avpkt.data = (uint8_t*)&message->data[0];
@@ -47,7 +48,8 @@ void H264Subscriber::internalCallback(const h264_image_transport_msgs::H264Packe
         ROS_ERROR("Could not decode H264 frame");
         return;
     }
-    convert_ctx = sws_getCachedContext(convert_ctx, picture->width, picture->height, AV_PIX_FMT_YUV420P, picture->width, picture->height, AV_PIX_FMT_BGR24, SWS_FAST_BILINEAR, NULL, NULL, NULL);
+    convert_ctx = sws_getCachedContext(convert_ctx, picture->width, picture->height, AV_PIX_FMT_YUV420P, picture->width, picture->height, AV_PIX_FMT_BGR24, SWS_FAST_BILINEAR,
+                                       nullptr, nullptr, NULL);
     sensor_msgs::ImagePtr out = boost::make_shared<sensor_msgs::Image>();
     out->data.resize(picture->width * picture->height * 3);
     int stride = 3*picture->width;
