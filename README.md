@@ -2,7 +2,7 @@
 <sup>Forked from [tilk/h264_image_transport](https://github.com/tilk/h264_image_transport).</sup>
 
 H264 subscription plugin for the ROS image transport.  
-This repo has been created to be used in pair with the [nvidia_gmsl_driver_ros](https://github.com/UT-ADL/sekonix_camera_ut) but can be used to decode any h264 packets published with the correct message.
+This repo has been created to be used in pair with the [nvidia_gmsl_driver_ros](https://github.com/UT-ADL/nvidia_gmsl_driver_ros) but can be used to decode any h264 packets published with the `sensor_msgs/CompressedImage` message.
 
 ## How to use
 ### Build
@@ -13,12 +13,15 @@ This repo has been created to be used in pair with the [nvidia_gmsl_driver_ros](
   ```
 - Clone the repo
   ```bash
-  git clone git@github.com:UT-ADL/h264_image_transport.git ./src
+  mkdir src
+  cd src
+  git clone git@github.com:UT-ADL/h264_image_transport.git
+  cd ..
   ```
 - Build and source the workspace
   ```bash
   catkin_make
-  source ./devel/bash
+  source devel/setup.bash
   ```
 - The H264 plugin for the ROS image transport is now available.
 
@@ -41,4 +44,4 @@ This repo has been created to be used in pair with the [nvidia_gmsl_driver_ros](
   ```bash
   rosrun image_transport republish h264
   ```
-  For for details see the image transport republish [doc](http://wiki.ros.org/image_transport#republish).
+  For details see the image transport republish [doc](http://wiki.ros.org/image_transport#Nodes).

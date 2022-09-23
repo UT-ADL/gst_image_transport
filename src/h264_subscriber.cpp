@@ -48,7 +48,7 @@ void H264Subscriber::internalCallback(const sensor_msgs::CompressedImage::ConstP
     }
 
     if (avcodec_receive_frame(context_, picture_) != 0) {
-        // No frame
+        // No frame, happens with SPS and PPS frames.
         return;
     }
 
@@ -66,5 +66,4 @@ void H264Subscriber::internalCallback(const sensor_msgs::CompressedImage::ConstP
     out_->header = message->header;
     user_cb(out_);
 }
-};
-
+}
