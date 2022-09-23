@@ -18,31 +18,33 @@ extern "C"
 
 namespace h264_image_transport {
 
-class H264Subscriber : public image_transport::SimpleSubscriberPlugin<sensor_msgs::CompressedImage>
-{
-public:
-    H264Subscriber();
-    virtual ~H264Subscriber();
+    class H264Subscriber : public image_transport::SimpleSubscriberPlugin<sensor_msgs::CompressedImage> {
+    public:
+        H264Subscriber();
 
-    virtual std::string getTransportName() const
-    {
-        return "h264";
-    }
+        virtual ~H264Subscriber();
 
-protected:
-    virtual void internalCallback(const sensor_msgs::CompressedImage::ConstPtr& message, const Callback& user_cb);
-    virtual void subscribeImpl (ros::NodeHandle &nh, const std::string &base_topic, uint32_t queue_size, const Callback &callback, const ros::VoidPtr &tracked_object, const image_transport::TransportHints &transport_hints);
+        virtual std::string getTransportName() const {
+            return "h264";
+        }
 
-private:
-    struct SwsContext *convert_ctx = nullptr;
-    AVCodec *codec_;
-    AVCodecContext *context_;
-    AVFrame *picture_;
-    AVPacket avpkt_;
+    protected:
+        virtual void internalCallback(const sensor_msgs::CompressedImage::ConstPtr &message, const Callback &user_cb);
 
-    sensor_msgs::ImagePtr out_ = boost::make_shared<sensor_msgs::Image>();
-    uint8_t *dst_ = nullptr;
-};
+        virtual void
+        subscribeImpl(ros::NodeHandle &nh, const std::string &base_topic, uint32_t queue_size, const Callback &callback,
+                      const ros::VoidPtr &tracked_object, const image_transport::TransportHints &transport_hints);
+
+    private:
+        struct SwsContext *convert_ctx = nullptr;
+        AVCodec *codec_;
+        AVCodecContext *context_;
+        AVFrame *picture_;
+        AVPacket avpkt_;
+
+        sensor_msgs::ImagePtr out_ = boost::make_shared<sensor_msgs::Image>();
+        uint8_t *dst_ = nullptr;
+    };
 
 };
 
