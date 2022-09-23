@@ -35,11 +35,13 @@ protected:
 
 private:
     struct SwsContext *convert_ctx = nullptr;
+    AVCodec *codec_;
+    AVCodecContext *context_;
+    AVFrame *picture_;
+    AVPacket avpkt_;
 
-    AVCodec *codec;
-    AVCodecContext *c;
-    AVFrame *picture;
-    AVPacket avpkt;
+    sensor_msgs::ImagePtr out_ = boost::make_shared<sensor_msgs::Image>();
+    uint8_t *dst_ = nullptr;
 };
 
 };
