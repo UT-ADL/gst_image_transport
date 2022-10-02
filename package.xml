@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <package>
   <name>h264_image_transport</name>
-  <version>0.0.0</version>
+  <version>0.0.1</version>
   <description>The h264_image_transport package</description>
 
-  <maintainer email="adl@ut.ee"> University of Tartu Autonomous Driving Lab</maintainer>
+  <maintainer email="adl@ut.ee">University of Tartu Autonomous Driving Lab</maintainer>
+  <author email="maxandre.ogeret@mogrobotics.com">Maxandre Ogeret</author>
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
@@ -27,6 +28,6 @@
   <run_depend>sensor_msgs</run_depend>
 
   <export>
-    <image_transport plugin="${prefix}/h264_plugins.xml" />
+    <image_transport plugin="${prefix}/h264_plugins.xml"/>
   </export>
 </package>
