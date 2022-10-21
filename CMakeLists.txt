@@ -1,55 +1,73 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(h264_image_transport)
+project(gst_image_transport)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
-# Find catkin macros and libraries if COMPONENTS list like find_package(catkin
-# REQUIRED COMPONENTS xyz) is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS image_transport cv_bridge pluginlib
-                                        roscpp sensor_msgs)
+        roscpp sensor_msgs)
 
 catkin_package(
-  INCLUDE_DIRS
-  include
-  LIBRARIES
-  h264_image_transport
-  CATKIN_DEPENDS
-  message_runtime
-  pluginlib
-  # DEPENDS system_lib
+        INCLUDE_DIRS
+        include
+        LIBRARIES
+        gst_image_transport
+        CATKIN_DEPENDS
+        message_runtime
+        pluginlib
+)
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLIB REQUIRED glib-2.0)
+pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
+pkg_check_modules(GSTREAMER_APP REQUIRED gstreamer-app-1.0)
+
+include_directories(
+        ${GLIB_INCLUDE_DIRS}
+        ${GSTREAMER_INCLUDE_DIRS}
+        ${GSTREAMER_APP_INCLUDE_DIRS}
+)
+
+link_directories(
+        ${GLIB_LIBRARY_DIRS}
+        ${GSTREAMER_LIBRARY_DIRS}
+        ${GSTREAMER_APP_LIBRARY_DIRS}
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
-# Declare a C++ library
-add_library(h264_image_transport src/h264_subscriber.cpp src/manifest.cpp)
+add_library(gst_decoder src/decoders/GstDecoder.cpp)
+add_library(gst_image_transport src/h264_subscriber.cpp src/h265_subscriber.cpp src/parent_subscriber.cpp include/gst_image_transport/parent_subscriber.h)
 
-add_dependencies(h264_image_transport ${${PROJECT_NAME}_EXPORTED_TARGETS}
-                 ${catkin_EXPORTED_TARGETS})
+add_dependencies(gst_image_transport ${${PROJECT_NAME}_EXPORTED_TARGETS}
+        ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(
-  h264_image_transport
-  ${catkin_LIBRARIES}
-  ${OpenCV_LIBRARIES}
-  x264
-  avcodec
-  avutil
-  swscale)
+        gst_decoder
+        ${GSTREAMER_LIBRARIES})
 
-class_loader_hide_library_symbols(h264_image_transport)
+target_link_libraries(
+        gst_image_transport
+        ${catkin_LIBRARIES}
+        ${OpenCV_LIBRARIES}
+        gst_decoder
+        x264
+        avcodec
+        avutil
+        swscale
+        gstapp-1.0)
 
-# Mark executables and/or libraries for installation
+class_loader_hide_library_symbols(gst_image_transport)
+
 install(
-  TARGETS h264_image_transport
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+        TARGETS gst_image_transport
+        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-# Mark cpp header files for installation
 install(
-  DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING
-  PATTERN "*.h"
-  PATTERN ".svn" EXCLUDE)
+        DIRECTORY include/${PROJECT_NAME}/
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+        FILES_MATCHING
+        PATTERN "*.h"
+        PATTERN ".svn" EXCLUDE)
 
-# Mark other files for installation (e.g. launch and bag files, etc.)
-install(FILES h264_plugins.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+install(FILES image_transport_plugins.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

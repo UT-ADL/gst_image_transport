@@ -1,8 +1,12 @@
-#include "gst_image_transport/h264_subscriber.h"
+#include "gst_image_transport/h265_subscriber.h"
 
-namespace h264_image_transport
+#include <cv_bridge/cv_bridge.h>
+
+#include <opencv2/imgproc/imgproc.hpp>
+
+namespace h265_image_transport
 {
-void H264Subscriber::subscribeImpl(ros::NodeHandle& nh, const std::string& base_topic, uint32_t queue_size,
+void H265Subscriber::subscribeImpl(ros::NodeHandle& nh, const std::string& base_topic, uint32_t queue_size,
                                    const Callback& callback, const ros::VoidPtr& tracked_object,
                                    const image_transport::TransportHints& transport_hints)
 {
@@ -10,7 +14,7 @@ void H264Subscriber::subscribeImpl(ros::NodeHandle& nh, const std::string& base_
   SimpleSubscriberPlugin::subscribeImpl(nh, base_topic, queue_size, callback, tracked_object, transport_hints);
 }
 
-void H264Subscriber::internalCallback(const sensor_msgs::CompressedImage::ConstPtr& message, const Callback& user_cb)
+void H265Subscriber::internalCallback(const sensor_msgs::CompressedImage::ConstPtr& message, const Callback& user_cb)
 {
   decoder_->push_data(message->data);
 
@@ -26,6 +30,6 @@ void H264Subscriber::internalCallback(const sensor_msgs::CompressedImage::ConstP
   out_->header = message->header;
   user_cb(out_);
 }
-}  // namespace h264_image_transport
+}  // namespace h265_image_transport
 
-PLUGINLIB_EXPORT_CLASS(h264_image_transport::H264Subscriber, image_transport::SubscriberPlugin);
+PLUGINLIB_EXPORT_CLASS(h265_image_transport::H265Subscriber, image_transport::SubscriberPlugin);

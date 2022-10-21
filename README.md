@@ -1,6 +1,6 @@
-# h264_image_transport
+# modern_image_transport
 
-<sup>Forked from [tilk/h264_image_transport](https://github.com/tilk/h264_image_transport).</sup>
+<sup>Inspired from [tilk/h264_image_transport](https://github.com/tilk/h264_image_transport).</sup>
 
 H264 subscription plugin for the ROS image transport.  
 This repo has been created to be used in pair with
@@ -18,7 +18,7 @@ packets published with the `sensor_msgs/CompressedImage` message.
   ```
 - Clone the repo
   ```bash
-  git clone git@github.com:UT-ADL/h264_image_transport.git src/h264_image_transport
+  git clone git@github.com:UT-ADL/gst_image_transport.git src/gst_image_transport
   ```
 - Build and source the workspace
   ```bash
