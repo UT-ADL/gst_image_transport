@@ -32,10 +32,10 @@ link_directories(
         ${GSTREAMER_APP_LIBRARY_DIRS}
 )
 
-include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(gst_decoder src/decoders/GstDecoder.cpp)
-add_library(gst_image_transport src/h264_subscriber.cpp src/h265_subscriber.cpp src/parent_subscriber.cpp include/gst_image_transport/parent_subscriber.h)
+add_library(gst_image_transport src/h264_subscriber.cpp src/h265_subscriber.cpp src/parent_subscriber.cpp)
 
 add_dependencies(gst_image_transport ${${PROJECT_NAME}_EXPORTED_TARGETS}
         ${catkin_EXPORTED_TARGETS})
@@ -47,9 +47,7 @@ target_link_libraries(
 target_link_libraries(
         gst_image_transport
         ${catkin_LIBRARIES}
-        ${OpenCV_LIBRARIES}
         gst_decoder
-        x264
         avcodec
         avutil
         swscale

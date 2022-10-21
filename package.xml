@@ -12,7 +12,6 @@
 
     <build_depend>cv_bridge</build_depend>
     <build_depend>image_transport</build_depend>
-    <build_depend>libx264-dev</build_depend>
     <build_depend>message_generation</build_depend>
     <build_depend>pluginlib</build_depend>
     <build_depend>roscpp</build_depend>
@@ -21,11 +20,11 @@
 
     <run_depend>cv_bridge</run_depend>
     <run_depend>image_transport</run_depend>
-    <run_depend>libx264-dev</run_depend>
     <run_depend>message_runtime</run_depend>
     <run_depend>pluginlib</run_depend>
     <run_depend>roscpp</run_depend>
     <run_depend>sensor_msgs</run_depend>
+
 
     <!-- GStreamer -->
     <build_depend>libgstreamer1.0-dev</build_depend>

@@ -6,15 +6,13 @@ GstDecoder::GstDecoder(std::string_view const& transportName) : transport_name_(
 
   std::string launchstr = PREFIX + TRANSPORT_TO_PIPELINE_DESC.at(transport_name_) + SUFFIX;
   bin_ = gst_parse_launch(launchstr.c_str(), &err_);
-
-  ROS_INFO_STREAM(launchstr);
-
+  
   if (G_UNLIKELY(bin_ == nullptr)) {
-    throw std::runtime_error("Couldn't create bin from launch string : " + launchstr);
+    throw GstDecoderInitException("Couldn't create bin from launch string : \"" + launchstr + "\".");
   }
 
   if (G_UNLIKELY(err_ != nullptr)) {
-    throw std::runtime_error("Error while parsing launch string : " + std::string(err_->message));
+    throw GstDecoderInitException("Error while parsing launch string : " + std::string(err_->message));
   }
 
   configure_app_elements();
@@ -33,13 +31,13 @@ void GstDecoder::configure_app_elements()
   appsrc_element_ = gst_bin_get_by_name(GST_BIN(bin_), "appsrc");
 
   if (G_UNLIKELY(appsrc_element_ == nullptr)) {
-    throw std::runtime_error("Couldn't retrieve appsrc.");
+    throw GstDecoderInitException("Couldn't retrieve appsrc.");
   }
 
   appsink_element_ = gst_bin_get_by_name(GST_BIN(bin_), "appsink");
 
   if (G_UNLIKELY(appsink_element_ == nullptr)) {
-    throw std::runtime_error("Couldn't retrieve appsink.");
+    throw GstDecoderInitException("Couldn't retrieve appsink.");
   }
 }
 
@@ -48,7 +46,7 @@ void GstDecoder::push_data(const std::vector<uint8_t>& data)
   InBuffer_ = gst_buffer_new_allocate(nullptr, data.size(), nullptr);
 
   if (G_UNLIKELY(!InBuffer_)) {
-    GST_WARNING("Failed to allocate buffer for %u bytes", 1);
+    throw GstDecoderRuntimeException("Failed to allocate buffer for " + std::to_string(data.size()) + " bytes.");
   }
 
   gst_buffer_fill(InBuffer_, 0, data.data(), data.size());

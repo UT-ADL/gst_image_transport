@@ -3,13 +3,14 @@
 #include <gst/app/gstappsink.h>
 #include <gst/app/gstappsrc.h>
 #include <gst/gst.h>
+#include <ros/ros.h>
 
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include "ros/ros.h"
+#include "GstDecoderExceptions.h"
 
 class GstDecoder
 {
@@ -23,8 +24,7 @@ public:
 private:
   const static inline std::unordered_map<std::string, std::string> TRANSPORT_TO_PIPELINE_DESC{
     { "h264", "h264parse ! avdec_h264" },
-    { "h265", "h265parse ! avdec_h265" },
-    { "vp9", "vp9parse ! avdec_vp9" },
+    { "h265", "h265parse ! avdec_h265" }
   };
   const static inline std::string PREFIX = "appsrc name=appsrc ! ";
   const static inline std::string SUFFIX = " ! videoconvert ! appsink name=appsink caps=video/x-raw,format=BGR";

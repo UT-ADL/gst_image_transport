@@ -11,10 +11,4 @@
             This plugin decodes a h265 video stream.
         </description>
     </class>
-    <class name="image_transport/vp9_sub" type="vp9_image_transport::Vp9Subscriber"
-           base_class_type="image_transport::SubscriberPlugin">
-        <description>
-            This plugin decodes a vp9 video stream.
-        </description>
-    </class>
 </library>
