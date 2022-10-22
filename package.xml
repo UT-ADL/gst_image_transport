@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
     <name>gst_image_transport</name>
     <version>0.0.1</version>
     <description>The h264_image_transport package</description>
@@ -19,8 +19,8 @@
     <depend>sensor_msgs</depend>
     <depend>gstreamer1.0-plugins-base</depend>
 
-    <run_depend>gstreamer1.0-plugins-bad</run_depend>
-    <run_depend>gstreamer1.0-libav</run_depend>
+    <exec_depend>gstreamer1.0-plugins-bad</exec_depend>
+    <exec_depend>gstreamer1.0-libav</exec_depend>
 
     <export>
         <image_transport plugin="${prefix}/image_transport_plugins.xml"/>

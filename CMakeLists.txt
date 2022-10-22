@@ -35,9 +35,6 @@ target_link_libraries(
         gst_image_transport
         ${catkin_LIBRARIES}
         gst_decoder
-        avcodec
-        avutil
-        swscale
         gstapp-1.0)
 
 class_loader_hide_library_symbols(gst_image_transport)
