@@ -3,15 +3,24 @@
 namespace h264_image_transport
 {
 
+/**
+ * Implementation-only h264 subscriber class.
+ */
 class H264Subscriber : public ParentSubscriber
 {
 public:
+  /**
+   * Get a string identifier for the transport provided by this subscriber.
+   */
   std::string getTransportName() const override
   {
     return TRANSPORT_NAME;
   }
 
 protected:
+  /**
+   * Gets the gst-decoder.
+   */
   GstDecoder* get_decoder() override
   {
     return decoder_.get();

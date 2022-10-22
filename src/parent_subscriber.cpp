@@ -19,9 +19,9 @@ void ParentSubscriber::internalCallback(const sensor_msgs::CompressedImage_<std:
   }
 
   out_->data = get_decoder()->get_data();
-  out_->width = get_decoder()->getWidth();
-  out_->height = get_decoder()->getHeight();
-  out_->step = 3 * get_decoder()->getWidth();
+  out_->width = get_decoder()->get_width();
+  out_->height = get_decoder()->get_height();
+  out_->step = 3 * get_decoder()->get_width();
   out_->encoding = sensor_msgs::image_encodings::BGR8;
   out_->header = message->header;
   user_cb(out_);

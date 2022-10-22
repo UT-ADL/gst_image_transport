@@ -2,13 +2,17 @@
 
 GstDecoder::GstDecoder(std::string_view const& transportName) : transport_name_(transportName)
 {
+  if (G_UNLIKELY(!TRANSPORT_TO_PIPELINE_DESC.count(transport_name_))) {
+    throw GstDecoderInitException("Transport " + transport_name_ + " is not supported.");
+  }
+
   gst_init(nullptr, nullptr);
 
   std::string launchstr = PREFIX + TRANSPORT_TO_PIPELINE_DESC.at(transport_name_) + SUFFIX;
   bin_ = gst_parse_launch(launchstr.c_str(), &err_);
-  
+
   if (G_UNLIKELY(bin_ == nullptr)) {
-    throw GstDecoderInitException("Couldn't create bin from launch string : \"" + launchstr + "\".");
+    throw GstDecoderInitException("Couldn't create bin from launch string : '" + launchstr + "'.");
   }
 
   if (G_UNLIKELY(err_ != nullptr)) {
@@ -87,12 +91,12 @@ std::vector<uint8_t> GstDecoder::get_data()
   return std::move(OutData_);
 }
 
-int GstDecoder::getWidth() const
+int GstDecoder::get_width() const
 {
   return width_;
 }
 
-int GstDecoder::getHeight() const
+int GstDecoder::get_height() const
 {
   return height_;
 }
