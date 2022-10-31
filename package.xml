@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>gst_image_transport</name>
+    <version>0.0.1</version>
+    <description>The h264_image_transport package</description>
+
+    <maintainer email="adl@ut.ee">University of Tartu Autonomous Driving Lab</maintainer>
+    <author email="maxandre.ogeret@mogrobotics.com">Maxandre Ogeret</author>
+    <license>MIT</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <build_depend>roscpp</build_depend>
+    <build_depend>libgstreamer1.0-dev</build_depend>
+    <build_depend>libgstreamer-plugins-base1.0-dev</build_depend>
+
+    <depend>image_transport</depend>
+    <depend>pluginlib</depend>
+    <depend>sensor_msgs</depend>
+    <depend>gstreamer1.0-plugins-base</depend>
+
+    <exec_depend>gstreamer1.0-plugins-bad</exec_depend>
+    <exec_depend>gstreamer1.0-libav</exec_depend>
+
+    <export>
+        <image_transport plugin="${prefix}/image_transport_plugins.xml"/>
+    </export>
+</package>
