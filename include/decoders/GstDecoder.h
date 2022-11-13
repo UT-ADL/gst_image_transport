@@ -29,8 +29,10 @@ public:
 
   /**
    * Pushes data into the the pipeline.
+   * @param data Data to push into the pipeline.
+   * @param timestamp Timestamp in ns to push alongside the data.
    */
-  void push_data(const std::vector<uint8_t>& data);
+  void push_data(const std::vector<uint8_t>& data, uint64_t timestamp);
 
   /**
    * Attempts to pull data from the pipeline.
@@ -44,16 +46,22 @@ public:
    */
   [[nodiscard]] std::vector<uint8_t> get_data();
 
+  /**
+   * Returns the timestamp attached to the data pulled from the pipeline by pull_data().
+   */
+  [[nodiscard]] uint64_t get_timestamp() const;
+
 private:
   /**
    * Map containing the supported transports and their respective pipeline descriptions.
    * New transports should be added to this map.
    */
-  const static inline std::unordered_map<std::string, std::string> TRANSPORT_TO_PIPELINE_DESC{
-    { "h264", "h264parse ! avdec_h264" },
-    { "h265", "h265parse ! avdec_h265" }
-  };
-  const static inline std::string PREFIX = "appsrc name=appsrc ! ";
+  const static inline std::unordered_map<std::string, std::string> TRANSPORT_TO_PIPELINE_DESC{ // clang-format off
+    { "h264", "appsrc name=appsrc caps=video/x-h264,stream-format=byte-stream,alignment=au,interlace-mode=progressive"
+      " ! queue ! h264parse ! queue ! avdec_h264 max-threads=1 ! queue" },
+    { "h265", "appsrc name=appsrc caps=video/x-h265,stream-format=byte-stream,alignment=au ! queue ! h265parse ! queue "
+      "! libde265dec ! queue" }
+  };  // clang-format on
   const static inline std::string SUFFIX = " ! videoconvert ! appsink name=appsink caps=video/x-raw,format=BGR";
 
   /**
@@ -62,17 +70,19 @@ private:
   void configure_app_elements();
 
   GstElement* bin_;
-  GstSample* OutSample_;
-  GstBuffer* OutBuffer_;
-  GstBuffer* InBuffer_;
+  GstSample* out_sample_;
+  GstBuffer* out_buffer_;
+  GstBuffer* in_buffer_;
   GError* err_ = nullptr;
   GstElement* appsrc_element_;
   GstElement* appsink_element_;
+  GstCaps* timestamp_caps_ = nullptr;
 
   int width_ = 0;
   int height_ = 0;
   std::string transport_name_;
-  std::vector<uint8_t> OutData_;
+  std::vector<uint8_t> out_data_;
+  uint64_t out_timestamp_;
 
 public:
   [[nodiscard]] int get_width() const;
