@@ -55,6 +55,7 @@ private:
   /**
    * Map containing the supported transports and their respective pipeline descriptions.
    * New transports should be added to this map.
+   * Make sure to set the CAPS correctly on the appsrc element.
    */
   const static inline std::unordered_map<std::string, std::string> TRANSPORT_TO_PIPELINE_DESC{ // clang-format off
     { "h264", "appsrc name=appsrc caps=video/x-h264,stream-format=byte-stream,alignment=au,interlace-mode=progressive"
