@@ -3,6 +3,7 @@
 #include <gst/app/gstappsink.h>
 #include <gst/app/gstappsrc.h>
 #include <gst/gst.h>
+#include <gst/video/video.h>  // Add this for GstVideoInfo
 #include <ros/ros.h>
 
 #include <iostream>
@@ -63,7 +64,7 @@ private:
     { "h265", "appsrc name=appsrc caps=video/x-h265,stream-format=byte-stream,alignment=au ! queue ! h265parse ! queue "
       "! libde265dec ! queue" }
   };  // clang-format on
-  const static inline std::string SUFFIX = " ! videoconvert ! appsink name=appsink caps=video/x-raw,format=BGR";
+  const static inline std::string SUFFIX = " ! videoconvert ! video/x-raw,format=BGR ! appsink name=appsink";
 
   /**
    * Configures the appsrc and appsink elements.
