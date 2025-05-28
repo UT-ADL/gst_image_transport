@@ -13,14 +13,23 @@ catkin_package(
         CATKIN_DEPENDS
         pluginlib)
 
+# Find GStreamer components including video
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
+pkg_check_modules(GST_APP REQUIRED gstreamer-app-1.0)
+pkg_check_modules(GST_VIDEO REQUIRED gstreamer-video-1.0)  # Add video component
 
 include_directories(${GSTREAMER_INCLUDE_DIRS})
 
 link_directories(${GSTREAMER_LIBRARY_DIRS})
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ${GSTREAMER_INCLUDE_DIRS}
+  ${GST_APP_INCLUDE_DIRS}
+  ${GST_VIDEO_INCLUDE_DIRS}  # Add video include dirs
+)
 
 add_library(gst_decoder src/decoders/GstDecoder.cpp)
 add_library(gst_image_transport src/h264_subscriber.cpp src/h265_subscriber.cpp
@@ -35,7 +44,9 @@ target_link_libraries(
         gst_image_transport
         ${catkin_LIBRARIES}
         gst_decoder
-        gstapp-1.0)
+        gstapp-1.0
+        ${GST_VIDEO_LIBRARIES}  # Add video libraries
+)
 
 class_loader_hide_library_symbols(gst_image_transport)
 
