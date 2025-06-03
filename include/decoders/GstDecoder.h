@@ -62,7 +62,7 @@ private:
     { "h264", "appsrc name=appsrc caps=video/x-h264,stream-format=byte-stream,alignment=au,interlace-mode=progressive"
       " ! queue ! h264parse ! queue ! avdec_h264 max-threads=1 ! queue" },
     { "h265", "appsrc name=appsrc caps=video/x-h265,stream-format=byte-stream,alignment=au ! queue ! h265parse ! queue "
-      "! libde265dec ! queue" }
+      "! avdec_h265 ! queue" }
   };  // clang-format on
   const static inline std::string SUFFIX = " ! videoconvert ! video/x-raw,format=BGR ! appsink name=appsink";
 
